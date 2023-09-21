@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -27,7 +26,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public final class MainActivityNew extends AppCompatActivity {
+public final class MainActivityNew extends Activity {
     private File photoFile;
     private final int CAPTURE_IMAGE_REQUEST = 1;
 
@@ -61,6 +60,7 @@ public final class MainActivityNew extends AppCompatActivity {
                         takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        System.out.println("========"+photoFile.getAbsolutePath());
                         MockActivity.captureIntent(takePictureIntent, CAPTURE_IMAGE_REQUEST);
                         startActivityForResult(takePictureIntent, CAPTURE_IMAGE_REQUEST);
                     }

@@ -2,6 +2,7 @@ package com.example.captureimage.pcloudy.camera;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
-import androidx.fragment.app.Fragment;
 import com.example.captureimage.pcloudy.utils.PatchEventLogger;
 import com.example.captureimage.pcloudy.utils.Util;
 import java.io.ByteArrayOutputStream;
@@ -131,7 +131,7 @@ public class MockActivity extends Activity {
     private static void replaceResult(Intent data) {
         MockImageProvider instance = MockImageProvider.getInstance();
         photoProvider = instance;
-//        data.putExtra("data", instance.getPhoto(null));
+        data.putExtra("data", instance.getPhoto(null));
         Log.d(TAG, "MockActivity:replaceResult: successfully replaced image in data intent");
     }
 
@@ -164,20 +164,20 @@ public class MockActivity extends Activity {
         }
         MockImageProvider instance = MockImageProvider.getInstance();
         photoProvider = instance;
-//        ByteArrayOutputStream stream = instance.getPhotoInBytes();
-//        try {
-//            OutputStream outputStream = contentResolver.openOutputStream(outputFileUri);
-//            if (outputStream == null) {
-//                Log.e(TAG, "MockActivity:replaceUriContent: outputStream is null");
-//                return;
-//            }
-//            stream.writeTo(outputStream);
-//            outputStream.close();
-//            stream.close();
-//        } catch (FileNotFoundException e3) {
-//            Log.e(TAG, "MockActivity:replaceUriContent: Failed to open output stream", e3);
-//        } catch (IOException e4) {
-//            Log.e(TAG, "MockActivity:replaceUriContent: Failed IO Operations", e4);
-//        }
+        ByteArrayOutputStream stream = instance.getPhotoInBytes();
+        try {
+            OutputStream outputStream = contentResolver.openOutputStream(outputFileUri);
+            if (outputStream == null) {
+                Log.e(TAG, "MockActivity:replaceUriContent: outputStream is null");
+                return;
+            }
+            stream.writeTo(outputStream);
+            outputStream.close();
+            stream.close();
+        } catch (FileNotFoundException e3) {
+            Log.e(TAG, "MockActivity:replaceUriContent: Failed to open output stream", e3);
+        } catch (IOException e4) {
+            Log.e(TAG, "MockActivity:replaceUriContent: Failed IO Operations", e4);
+        }
     }
 }

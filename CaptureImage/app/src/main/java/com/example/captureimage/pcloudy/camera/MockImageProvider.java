@@ -21,7 +21,9 @@ class MockImageProvider {
     private static MockImageProvider instance = null;
     private ReadWriteLock lock = new ReentrantReadWriteLock();
     private Date mTime;
-    private final String mockedImagePath = "/data/local/tmp/BrowserstackMockImage.png";
+    private final String mockedImagePath ="/storage/emulated/0/pcloudy_test.jpg";
+//            "/storage/emulated/0/Android/data/com.example.captureimage/files/Pictures/JPEG_20230917_161041_6879468627121914803.jpg";
+//            "/storage/emulated/0/Android/data/com.example.captureimage/files/Pictures/JPEG_20230917_153318_7781807053330301934.jpg";
     private byte[] nv21Image = null;
     private Bitmap photo;
     private Size saveSize = new Size(0, 0);
@@ -34,7 +36,7 @@ class MockImageProvider {
     }
 
     private void updateInjectedImage() {
-        File injectedImage = new File("/data/local/tmp/BrowserstackMockImage.png");
+        File injectedImage = new File(mockedImagePath);
         Date lastModifiedTime = new Date(injectedImage.lastModified());
         if (lastModifiedTime.after(this.mTime)) {
             updateBitmap(injectedImage.getAbsolutePath());
@@ -55,14 +57,23 @@ class MockImageProvider {
         }
 
     }
+    public Bitmap getPhoto(Size dimension) {
+        updateInjectedImage();
+        this.lock.readLock().lock();
+        try {
+            Bitmap bitmap = this.photo;
+            return bitmap;
+        } finally {
+            this.lock.readLock().unlock();
+        }
+    }
 
-
-//    public ByteArrayOutputStream getPhotoInBytes() {
-//        Bitmap bitmap = getPhoto(null);
-//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-//        return stream;
-//    }
+    public ByteArrayOutputStream getPhotoInBytes() {
+        Bitmap bitmap = getPhoto(null);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        return stream;
+    }
 
 //    public ByteArrayOutputStream getPhotoInBytes(int width, int height) {
 //        Bitmap bitmap = getPhoto(new Size(width, height));
